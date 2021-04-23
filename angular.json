@@ -1,6 +1,7 @@
 {
   "version": 1,
   "cli": {
+    "analytics": "9d5ca212-716c-4c44-8a43-0daf902a8c50",
     "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "github-search",
@@ -49,9 +50,14 @@
             "aot": true,
             "assets": [
               "apps/github-search/src/favicon.ico",
-              "apps/github-search/src/assets"
+              "apps/github-search/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
-            "styles": ["apps/github-search/src/styles.scss"],
+            "styles": ["apps/github-search/src/theme.less", "apps/github-search/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
