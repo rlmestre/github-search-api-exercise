@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
   }
 
   setSearchQuery(q: string) {
-    console.log(q);
     if (q) {
       this.router.navigate(['search'], {
         queryParams: { q },

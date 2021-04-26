@@ -4,6 +4,10 @@
   padding: 15px;
 }
 
+nz-header {
+  padding: 0 calc((100% - 1000px) / 2);
+}
+
 li {
   margin: 0 10px;
 }
