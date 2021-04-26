@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {HeaderModule} from "./header/header.component";
 import {AppRoutingModule} from "./app-routing.module";
+import {HttpAppModule} from "./http/http-app.module";
 
 registerLocaleData(en);
 
@@ -21,6 +22,7 @@ registerLocaleData(en);
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpAppModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HeaderModule,
