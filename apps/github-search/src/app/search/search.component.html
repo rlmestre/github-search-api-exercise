@@ -1,0 +1,49 @@
+<nz-content>
+  <div *ngIf="search$ | async as search" class="main-container">
+    <div class="search-categories-column">
+      <ul nz-menu nzMode="inline">
+        <li nz-menu-item [nzSelected]="type === 'repositories'" (click)="changeType('repositories')">
+          Repositories
+          <nz-tag>{{ search.total_count | numAbbr }}</nz-tag>
+        </li>
+      </ul>
+    </div>
+    <div class="search-content">
+      <nz-page-header>
+        <nz-page-header-title>{{ search.total_count | number }} repository results</nz-page-header-title>
+        <nz-page-header-extra>
+          <nz-select [(ngModel)]="sortBy" [nzDropdownMatchSelectWidth]="false">
+            <nz-option-group nzLabel="Sort options">
+              <nz-option nzValue="best-match" nzLabel="Best match"></nz-option>
+              <nz-option nzValue="most-stars" nzLabel="Most stars"></nz-option>
+              <nz-option nzLabel="Fewest stars"></nz-option>
+              <nz-option nzLabel="Most forks"></nz-option>
+              <nz-option nzLabel="Fewest forks"></nz-option>
+              <nz-option nzLabel="Least recently updated"></nz-option>
+            </nz-option-group>
+          </nz-select>
+        </nz-page-header-extra>
+      </nz-page-header>
+      <nz-card *ngFor="let result of search.items">
+        <nz-card-meta [nzTitle]="title" [nzDescription]="description" [nzAvatar]="avatar"></nz-card-meta>
+        <ng-template #title>
+          <a [href]="result.html_url" target="_blank">{{ result.full_name }}</a>
+          <nz-tag *ngIf="result.archived">Archived</nz-tag>
+        </ng-template>
+        <ng-template #avatar>📙</ng-template>
+        <ng-template #description>
+          <div>{{ result.description }}</div>
+          <div style="font-size: 12px" class="repo-search-footer">
+            <a [href]="result.html_url + '/stargazers'" target="_blank">⭐️ {{ result.stargazers_count }}</a>
+            <nz-badge *ngIf="result.language" [nzColor]="'#e34c26'" [nzText]="result.language"></nz-badge>
+            <span *ngIf="result.license">{{ result.license?.name }}</span>
+            <span>Updated on {{ result.updated_at | date }}</span>
+          </div>
+        </ng-template>
+      </nz-card>
+      <nz-pagination [nzTotal]="search.total_count" [nzPageIndex]="page"
+                     (nzPageIndexChange)="changePage($event)"></nz-pagination>
+    </div>
+    <!--      <pre>{{ search | json }}</pre>-->
+  </div>
+</nz-content>
