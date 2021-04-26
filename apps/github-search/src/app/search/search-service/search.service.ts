@@ -47,7 +47,10 @@ export class SearchService {
       this.search[type] = this.http.get(
         `https://api.github.com/search/${type}`,
         {
-          params: { q, page, sort, order }
+          params: {
+            q, page, sort, order,
+            per_page: '10',
+          }
         }
       ).pipe(
         shareReplay(),
