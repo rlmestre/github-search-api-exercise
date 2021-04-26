@@ -20,6 +20,8 @@ import {SearchParameters} from "../models/search.model";
   providedIn: 'root'
 })
 export class SearchService {
+  error = '';
+
   queryParams$ = this.route.queryParamMap.pipe(
     filter(paramMap => !!paramMap.get('q')), // Ignore empty query to prevent errors
     map(paramMap => this.extractKeys(paramMap)), // Map to plain object

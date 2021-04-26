@@ -21,6 +21,8 @@ import {SearchComponent} from "./search.component";
 import {SearchTypeMenuComponent} from './search-type-menu/search-type-menu.component';
 import {SearchHeaderWithSortComponent} from './search-header-with-sort/search-header-with-sort.component';
 import {NumAbbrPipeModule} from "../utils/NumAbbrPipe.pipe";
+import {NzAlertModule} from "ng-zorro-antd/alert";
+import {NzAffixModule} from "ng-zorro-antd/affix";
 
 @NgModule({
   declarations: [SearchComponent, SearchTypeMenuComponent, SearchHeaderWithSortComponent],
@@ -42,6 +44,8 @@ import {NumAbbrPipeModule} from "../utils/NumAbbrPipe.pipe";
     NzButtonModule,
     NzInputModule,
     NzImageModule,
+    NzAlertModule,
+    NzAffixModule,
   ],
 })
 export class SearchModule {}

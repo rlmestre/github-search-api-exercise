@@ -8,6 +8,8 @@ import {NzAffixModule} from "ng-zorro-antd/affix";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {SearchService} from "../search/search-service/search.service";
+import {NzAlertModule} from "ng-zorro-antd/alert";
+import {RouterModule} from "@angular/router";
 
 @Component({
   selector: 'demo-header',
@@ -19,7 +21,7 @@ export class HeaderComponent implements OnInit {
   searchQ = '';
   changeQuery = this.searchService.changeQuery.bind(this.searchService);
 
-  constructor(private searchService: SearchService) { }
+  constructor(public searchService: SearchService) { }
 
   ngOnInit() {
     this.searchService.queryParams$.subscribe(params => this.searchQ = params['q']);
@@ -43,7 +45,9 @@ export class HeaderComponent implements OnInit {
     NzAffixModule,
     NzInputModule,
     NzIconModule,
-    FormsModule
+    FormsModule,
+    NzAlertModule,
+    RouterModule
   ],
   exports: [HeaderComponent]
 })

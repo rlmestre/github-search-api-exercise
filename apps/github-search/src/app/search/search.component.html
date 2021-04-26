@@ -21,7 +21,7 @@
 </nz-content>
 
 <ng-template #blankState>
-  <nz-content *ngIf="!search$">
+  <nz-content *ngIf="!search$" style="padding: 2rem">
     <nz-page-header>
       <nz-page-header-title>
         <i nz-icon nzType="search"></i>
@@ -29,7 +29,8 @@
       </nz-page-header-title>
     </nz-page-header>
     <nz-input-group nzSearch [nzAddOnAfter]="afterButton">
-      <input nz-input placeholder="Search GitHub" [(ngModel)]="queryParams.q" />
+      <input nz-input placeholder="Search GitHub" [(ngModel)]="queryParams.q" #searchField
+             (keyup.enter)="changeQuery({ q: searchField.value })" />
     </nz-input-group>
     <ng-template #afterButton>
       <button nz-button nzSearch (click)="changeQuery({ q: queryParams.q })">Search</button>
