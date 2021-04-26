@@ -1,0 +1,10 @@
+<ul nz-menu nzMode="inline">
+  <li nz-menu-item [nzSelected]="type === 'repositories'" (click)="changeType('repositories')">
+    Repositories
+    <nz-tag style="margin-left: auto">{{ 1 | numAbbr }}</nz-tag>
+  </li>
+  <li nz-menu-item [nzSelected]="type === 'users'" (click)="changeType('users')">
+    Users
+    <nz-tag style="margin-left: auto">{{ 1 | numAbbr }}</nz-tag>
+  </li>
+</ul>

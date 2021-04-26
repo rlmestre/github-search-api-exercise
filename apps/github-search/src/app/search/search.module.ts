@@ -14,9 +14,13 @@ import {NzMenuModule} from "ng-zorro-antd/menu";
 import {SearchRoutingModule} from "./search-routing.module";
 import {SearchComponent} from "./search.component";
 import {NumAbbrPipeModule} from "../utils/NumAbbrPipe.pipe";
+import {NzResultModule} from "ng-zorro-antd/result";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import { SearchTypeMenuComponent } from './search-type-menu/search-type-menu.component';
 
 @NgModule({
-  declarations: [SearchComponent],
+  declarations: [SearchComponent, SearchTypeMenuComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -30,7 +34,9 @@ import {NumAbbrPipeModule} from "../utils/NumAbbrPipe.pipe";
     NzBadgeModule,
     NzPaginationModule,
     NzMenuModule,
+    NzResultModule,
+    NzIconModule,
+    NzButtonModule,
   ],
-  exports: [SearchComponent]
 })
 export class SearchModule {}

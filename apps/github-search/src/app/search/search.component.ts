@@ -1,6 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
+import {scan} from "rxjs/operators";
+
+type Sorting = { sort: string | null, order?: 'desc' | 'asc'};
+const defaultSort: Sorting = { sort: null };
+
+const sortOptions = {
+  'repositories': {
+    'Best match': defaultSort,
+    'Most stars': { sort: 'stars', order: 'desc' },
+    'Least stars': { sort: 'stars', order: 'asc' },
+    'Most forks': { sort: 'forks', order: 'desc' },
+    'Least forks': { sort: 'forks', order: 'asc' },
+    'Recently updated': { sort: 'updated', order: 'desc' },
+    'Least recently updated': { sort: 'updated', order: 'asc' },
+  },
+  'users': {
+    'Best match': defaultSort,
+    'Most followers': { sort: 'followers', order: 'desc' },
+    'Least followers': { sort: 'followers', order: 'asc' },
+    'Most recently joined': { sort: 'joined', order: 'desc' },
+    'Least recently joined': { sort: 'joined', order: 'asc' },
+    'Most repositories': { sort: 'repositories', order: 'desc' },
+    'Least repositories': { sort: 'repositories', order: 'asc' },
+  }
+};
 
 @Component({
   selector: 'demo-search',
@@ -10,15 +35,17 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class SearchComponent implements OnInit {
   title = 'github-search';
   search$ = null;
-  sortBy = 'best-match';
+
+  query = '';
   page = 1;
   type = 'repositories';
+  sortBy: Sorting = sortOptions[this.type]['Best match'];
+  sortOptions = sortOptions;
+  noSort = (_a, _b) => 0;
 
   // TODO: loading/empty states
-  // TODO: search by users
   // TODO: user search result component(s)
   // TODO: repo search result component(s)
-  // TODO: implement sorting
   // TODO: fix issue with numAbbr
   // TODO: implement simple caching
   // TODO: set colors for languages
@@ -27,18 +54,31 @@ export class SearchComponent implements OnInit {
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.pipe(
+      scan((prevParams, nextParams) => {
+        if (prevParams.get('type') !== nextParams.get('type')) {
+          // TODO: reset sorting when changing type
+        }
+
+        return nextParams;
+      })
+    ).subscribe(params => {
+      this.query = params.get('q');
       const page = this.page = Number(params.get('page'))
       const type = this.type = params.get('type') ?? 'repositories';
+
+      this.sortBy ??= this.sortOptions[type]['Best match'];
 
       this.search$ = this.http.get(
         `https://api.github.com/search/${type}`,
         {
           params: {
-            q: params.get('q'),
+            q: this.query,
             page: String(page),
             per_page: '10',
-            type
+            type,
+            sort: this.sortBy.sort ?? '',
+            order: this.sortBy.order ?? '',
           }
         }
       );
@@ -52,9 +92,9 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  changeType(type: string) {
+  changeSort(sorting: Sorting) {
     this.router.navigate(['search'], {
-      queryParams: { type },
+      queryParams: sorting,
       queryParamsHandling: "merge",
     });
   }
