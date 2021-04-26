@@ -2,6 +2,10 @@ import {NgModule} from "@angular/core";
 import {Route, RouterModule} from "@angular/router";
 
 const routes: Route[] = [
+  {
+    path: '**',
+    redirectTo: 'search'
+  },
   { path: 'search',
     loadChildren: () => import('./search/search.module')
       .then(m => m.SearchModule),
