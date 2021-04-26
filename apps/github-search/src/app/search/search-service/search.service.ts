@@ -1,29 +1,56 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {filter, map, share, shareReplay, take, tap} from "rxjs/operators";
+
+import {BehaviorSubject} from "rxjs";
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  scan,
+  shareReplay,
+  take,
+  tap
+} from "rxjs/operators";
+
 import {SearchParameters} from "../models/search.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  queryParams$;
+  queryParams$ = this.route.queryParamMap.pipe(
+    filter(paramMap => !!paramMap.get('q')), // Ignore empty query to prevent errors
+    map(paramMap => this.extractKeys(paramMap)), // Map to plain object
+    distinctUntilChanged((prev, curr) =>
+      // Really basic object comparison to prevent repeat emits when params haven't changed.
+      JSON.stringify(prev) === JSON.stringify(curr)), // Normally I'd reach for lodash
+    tap(params => this.setSearches(params)),
+    shareReplay(), // Share among components
+  );
+
+  private _search = {
+    'repositories': new BehaviorSubject(null),
+    'users': new BehaviorSubject(null),
+  }
+
   search = {
-    'repositories': null,
-    'users': null,
+    'repositories': this._search.repositories.asObservable().pipe(
+      // Fall back to previous emission on error.
+      scan((prev, next) => next ?? prev)
+    ),
+    'users': this._search.users.asObservable().pipe(
+      // Fall back to previous emission on error.
+      scan((prev, next) => next ?? prev)
+    ),
   }
 
   constructor(private http: HttpClient,
               private route: ActivatedRoute,
-              private router: Router) {
-    this.queryParams$ = this.route.queryParamMap.pipe(
-      filter(paramMap => !!paramMap.get('q')),
-      map(paramMap => this.extractKeys(paramMap)),
-      tap(params => this.setSearches(params)),
-    );
-  }
+              private router: Router) {}
 
+  // Map QueryParamMap to plain object for external availability.
   private extractKeys(paramMap: ParamMap): any {
     let extractedParams = {
       q: '',
@@ -40,11 +67,13 @@ export class SearchService {
     return extractedParams;
   }
 
+  // Map HttpClient responses to BehaviorSubjects for reuse since
+  // HttpClient methods complete after one emit.
   private setSearches(params: any) {
     const { q, page, sort, order } = params;
 
     for (let type in this.search) {
-      this.search[type] = this.http.get(
+      this.http.get(
         `https://api.github.com/search/${type}`,
         {
           params: {
@@ -53,8 +82,10 @@ export class SearchService {
           }
         }
       ).pipe(
-        shareReplay(),
-      );
+        // Return null on error so scan operator on the observables above
+        // can fall back to the previous emission.
+        catchError(() => null),
+      ).subscribe(response => this._search[type].next(response));
     }
   }
 
@@ -63,6 +94,7 @@ export class SearchService {
     return this.queryParams$.pipe(take(1)).toPromise();
   }
 
+  // Merge queryParams only when `q` doesn't change.
   changeQuery(newParams: SearchParameters) {
     const queryParamsHandling = ('q' in newParams) ? '' : 'merge';
 

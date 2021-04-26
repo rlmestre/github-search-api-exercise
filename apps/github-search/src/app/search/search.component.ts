@@ -17,7 +17,6 @@ export class SearchComponent implements OnInit {
 
   // TODO: user search result component(s)
   // TODO: repo search result component(s)
-  // TODO: implement simple caching
   // TODO: set colors for languages
   // TODO: maybe possibly filter by language? in repo search
 
