@@ -1,4 +1,4 @@
-<nz-content *ngIf="search$ | async as search" class="main-container">
+<nz-content *ngIf="search$ | async as search; else blankState" class="main-container">
   <demo-search-type-menu></demo-search-type-menu>
   <div class="search-content">
     <ng-container *ngIf="search.items && search.items.length; else noSearchResults">
@@ -17,6 +17,23 @@
     </ng-template>
   </div>
 </nz-content>
+
+<ng-template #blankState>
+  <nz-content *ngIf="!search$">
+    <nz-page-header>
+      <nz-page-header-title>
+        <i nz-icon nzType="search"></i>
+        Search more than <b>70M</b> users
+      </nz-page-header-title>
+    </nz-page-header>
+    <nz-input-group nzSearch [nzAddOnAfter]="afterButton">
+      <input nz-input placeholder="Search GitHub" [(ngModel)]="query" />
+    </nz-input-group>
+    <ng-template #afterButton>
+      <button nz-button nzSearch (click)="changeQuery(query)">Search</button>
+    </ng-template>
+  </nz-content>
+</ng-template>
 
 <ng-template #repositories let-search="search">
   <nz-page-header>
