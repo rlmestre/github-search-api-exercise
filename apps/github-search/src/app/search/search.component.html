@@ -2,10 +2,10 @@
   <demo-search-type-menu></demo-search-type-menu>
   <div class="search-content">
     <ng-container *ngIf="search.items && search.items.length; else noSearchResults">
-      <demo-search-header-with-sort [type]="type" [count]="search.total_count"></demo-search-header-with-sort>
+      <demo-search-header-with-sort [type]="queryParams.type" [count]="search.total_count"></demo-search-header-with-sort>
 
-      <ng-container *ngTemplateOutlet="type === 'repositories' ? repositories : users; context: { search: search }"></ng-container>
-      <nz-pagination [nzTotal]="min(search.total_count, 1000)" [nzPageIndex]="page"
+      <ng-container *ngTemplateOutlet="queryParams.type === 'repositories' ? repositories : users; context: { search: search }"></ng-container>
+      <nz-pagination [nzTotal]="min(search.total_count, 1000)" [nzPageIndex]="queryParams.page"
                      (nzPageIndexChange)="changeQuery({ page: $event })"></nz-pagination>
     </ng-container>
     <ng-template #noSearchResults>
@@ -14,7 +14,7 @@
         <i nz-icon nzType="search"></i>
       </ng-template>
       <ng-template #title>
-        <span>We couldn't find any {{ type }} matching '{{ query }}'</span>
+        <span>We couldn't find any {{ queryParams.type }} matching '{{ queryParams.q }}'</span>
       </ng-template>
     </ng-template>
   </div>
@@ -29,10 +29,10 @@
       </nz-page-header-title>
     </nz-page-header>
     <nz-input-group nzSearch [nzAddOnAfter]="afterButton">
-      <input nz-input placeholder="Search GitHub" [(ngModel)]="query" />
+      <input nz-input placeholder="Search GitHub" [(ngModel)]="queryParams.q" />
     </nz-input-group>
     <ng-template #afterButton>
-      <button nz-button nzSearch (click)="changeQuery(query)">Search</button>
+      <button nz-button nzSearch (click)="changeQuery({ q: queryParams.q })">Search</button>
     </ng-template>
   </nz-content>
 </ng-template>
