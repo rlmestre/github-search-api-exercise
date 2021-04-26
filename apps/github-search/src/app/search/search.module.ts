@@ -18,9 +18,11 @@ import {NzResultModule} from "ng-zorro-antd/result";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import { SearchTypeMenuComponent } from './search-type-menu/search-type-menu.component';
+import {NzInputModule} from "ng-zorro-antd/input";
+import { SearchHeaderWithSortComponent } from './search-header-with-sort/search-header-with-sort.component';
 
 @NgModule({
-  declarations: [SearchComponent, SearchTypeMenuComponent],
+  declarations: [SearchComponent, SearchTypeMenuComponent, SearchHeaderWithSortComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -37,6 +39,7 @@ import { SearchTypeMenuComponent } from './search-type-menu/search-type-menu.com
     NzResultModule,
     NzIconModule,
     NzButtonModule,
+    NzInputModule,
   ],
 })
 export class SearchModule {}

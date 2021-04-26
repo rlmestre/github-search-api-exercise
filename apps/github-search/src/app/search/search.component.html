@@ -2,6 +2,8 @@
   <demo-search-type-menu></demo-search-type-menu>
   <div class="search-content">
     <ng-container *ngIf="search.items && search.items.length; else noSearchResults">
+      <demo-search-header-with-sort [type]="type" [count]="search.total_count"></demo-search-header-with-sort>
+
       <ng-container *ngTemplateOutlet="type === 'repositories' ? repositories : users; context: { search: search }"></ng-container>
       <nz-pagination [nzTotal]="search.total_count" [nzPageIndex]="page"
                      (nzPageIndexChange)="changePage($event)"></nz-pagination>
@@ -36,22 +38,11 @@
 </ng-template>
 
 <ng-template #repositories let-search="search">
-  <nz-page-header>
-    <nz-page-header-title>{{ search.total_count | number }} repository results</nz-page-header-title>
-    <nz-page-header-extra>
-      <nz-select [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)" [nzDropdownMatchSelectWidth]="false">
-        <nz-option-group nzLabel="Sort options">
-          <nz-option *ngFor="let option of sortOptions[type] | keyvalue: noSort"
-                     [nzValue]="option.value" [nzLabel]="option.key"></nz-option>
-        </nz-option-group>
-      </nz-select>
-    </nz-page-header-extra>
-  </nz-page-header>
   <nz-card *ngFor="let result of search.items">
     <nz-card-meta [nzTitle]="title" [nzDescription]="description" [nzAvatar]="avatar"></nz-card-meta>
     <ng-template #title>
       <a [href]="result.html_url" target="_blank">{{ result.full_name }}</a>
-      <nz-tag *ngIf="result.archived">Archived</nz-tag>
+      <nz-tag *ngIf="result.archived" style="margin-left: 1rem">Archived</nz-tag>
     </ng-template>
     <ng-template #avatar>📙</ng-template>
     <ng-template #description>
@@ -67,17 +58,6 @@
 </ng-template>
 
 <ng-template #users let-search="search">
-  <nz-page-header>
-    <nz-page-header-title>{{ search.total_count | number }} users</nz-page-header-title>
-    <nz-page-header-extra>
-      <nz-select [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)" [nzDropdownMatchSelectWidth]="false">
-        <nz-option-group nzLabel="Sort options">
-          <nz-option *ngFor="let option of sortOptions[type] | keyvalue: noSort"
-                     [nzValue]="option.value" [nzLabel]="option.key"></nz-option>
-        </nz-option-group>
-      </nz-select>
-    </nz-page-header-extra>
-  </nz-page-header>
   <nz-card *ngFor="let result of search.items">
     <nz-card-meta [nzTitle]="title" [nzAvatar]="avatar"></nz-card-meta>
     <ng-template #title>
@@ -86,15 +66,6 @@
     </ng-template>
     <ng-template #avatar>
       <img [src]="result.avatar_url" style="max-width: 40px" [alt]="result.login + '\'s avatar'" />
-    </ng-template>
-    <ng-template #description>
-      <div>{{ result.description }}</div>
-      <div style="font-size: 12px" class="repo-search-footer">
-        <a [href]="result.html_url + '/stargazers'" target="_blank">⭐️ {{ result.stargazers_count }}</a>
-        <nz-badge *ngIf="result.language" [nzColor]="'#e34c26'" [nzText]="result.language"></nz-badge>
-        <span *ngIf="result.license">{{ result.license?.name }}</span>
-        <span>Updated on {{ result.updated_at | date }}</span>
-      </div>
     </ng-template>
   </nz-card>
 </ng-template>
