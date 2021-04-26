@@ -5,7 +5,7 @@
       <demo-search-header-with-sort [type]="type" [count]="search.total_count"></demo-search-header-with-sort>
 
       <ng-container *ngTemplateOutlet="type === 'repositories' ? repositories : users; context: { search: search }"></ng-container>
-      <nz-pagination [nzTotal]="search.total_count" [nzPageIndex]="page"
+      <nz-pagination [nzTotal]="min(search.total_count, 1000)" [nzPageIndex]="page"
                      (nzPageIndexChange)="changePage($event)"></nz-pagination>
     </ng-container>
     <ng-template #noSearchResults>
@@ -65,7 +65,8 @@
       <a [href]="result.html_url" target="_blank" nz-button style="margin-left: auto">Follow</a>
     </ng-template>
     <ng-template #avatar>
-      <img [src]="result.avatar_url" style="max-width: 40px" [alt]="result.login + '\'s avatar'" />
+      <img nz-image [nzSrc]="result.avatar_url" [nzPlaceholder]="imgFallback"
+           [alt]="result.login + '\'s avatar'" style="max-width: 40px" />
     </ng-template>
   </nz-card>
 </ng-template>
