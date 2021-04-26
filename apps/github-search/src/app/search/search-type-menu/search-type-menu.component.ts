@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'demo-search-type-menu',
   templateUrl: './search-type-menu.component.html',
-  styleUrls: ['./search-type-menu.component.scss']
+  styleUrls: ['./search-type-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchTypeMenuComponent implements OnInit {
   type = '';
@@ -18,9 +19,9 @@ export class SearchTypeMenuComponent implements OnInit {
   }
 
   changeType(type: string) {
+    const q = this.route.snapshot.queryParamMap.get('q') ?? '';
     this.router.navigate(['search'], {
-      queryParams: { type },
-      queryParamsHandling: "merge",
+      queryParams: {type, q },
     });
   }
 }

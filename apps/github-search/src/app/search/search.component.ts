@@ -55,13 +55,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParamMap.pipe(
-      scan((prevParams, nextParams) => {
-        if (prevParams.get('type') !== nextParams.get('type')) {
-          // TODO: reset sorting when changing type
-        }
-
-        return nextParams;
-      })
+      filter(params => !!params.get('q')),
     ).subscribe(params => {
       this.query = params.get('q');
       const page = this.page = Number(params.get('page'))
