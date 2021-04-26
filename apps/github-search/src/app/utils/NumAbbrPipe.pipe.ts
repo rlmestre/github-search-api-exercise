@@ -6,6 +6,10 @@ import { NgModule, Pipe, PipeTransform } from '@angular/core';
 export class NumAbbrPipe implements PipeTransform {
   transform(value: number): string {
     // Adapted from https://stackoverflow.com/questions/10599933/
+    if (!value) {
+      return '0';
+    }
+
     let newValue: string = String(value);
     if (value >= 1000) {
       const suffixes = ["", "K", "M", "B", "T"] as const;
