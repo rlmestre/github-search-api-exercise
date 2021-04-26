@@ -10,17 +10,17 @@ import {NzTagModule} from "ng-zorro-antd/tag";
 import {NzBadgeModule} from "ng-zorro-antd/badge";
 import {NzPaginationModule} from "ng-zorro-antd/pagination";
 import {NzMenuModule} from "ng-zorro-antd/menu";
-
-import {SearchRoutingModule} from "./search-routing.module";
-import {SearchComponent} from "./search.component";
-import {NumAbbrPipeModule} from "../utils/NumAbbrPipe.pipe";
 import {NzResultModule} from "ng-zorro-antd/result";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {NzButtonModule} from "ng-zorro-antd/button";
-import { SearchTypeMenuComponent } from './search-type-menu/search-type-menu.component';
 import {NzInputModule} from "ng-zorro-antd/input";
-import { SearchHeaderWithSortComponent } from './search-header-with-sort/search-header-with-sort.component';
 import {NzImageModule} from "ng-zorro-antd/image";
+
+import {SearchRoutingModule} from "./search-routing.module";
+import {SearchComponent} from "./search.component";
+import {SearchTypeMenuComponent} from './search-type-menu/search-type-menu.component';
+import {SearchHeaderWithSortComponent} from './search-header-with-sort/search-header-with-sort.component';
+import {NumAbbrPipeModule} from "../utils/NumAbbrPipe.pipe";
 
 @NgModule({
   declarations: [SearchComponent, SearchTypeMenuComponent, SearchHeaderWithSortComponent],
