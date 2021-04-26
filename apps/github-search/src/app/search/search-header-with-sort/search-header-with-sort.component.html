@@ -1,7 +1,8 @@
 <nz-page-header>
   <nz-page-header-title>{{ count | number }} {{ type }}</nz-page-header-title>
   <nz-page-header-extra>
-    <nz-select [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)" [nzDropdownMatchSelectWidth]="false">
+    <nz-select [(ngModel)]="sortBy" [nzDropdownMatchSelectWidth]="false"
+               (ngModelChange)="changeQuery($event)">
       <nz-option-group nzLabel="Sort options">
         <nz-option *ngFor="let option of sortOptions[type] | keyvalue: noSort"
                    [nzValue]="option.value" [nzLabel]="option.key"></nz-option>

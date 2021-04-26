@@ -6,7 +6,7 @@
 
       <ng-container *ngTemplateOutlet="type === 'repositories' ? repositories : users; context: { search: search }"></ng-container>
       <nz-pagination [nzTotal]="min(search.total_count, 1000)" [nzPageIndex]="page"
-                     (nzPageIndexChange)="changePage($event)"></nz-pagination>
+                     (nzPageIndexChange)="changeQuery({ page: $event })"></nz-pagination>
     </ng-container>
     <ng-template #noSearchResults>
       <nz-result [nzIcon]="icon" [nzTitle]="title" style="text-align: center"></nz-result>

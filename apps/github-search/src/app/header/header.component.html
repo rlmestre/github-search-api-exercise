@@ -3,8 +3,10 @@
     <img class="logo" src="assets/github-dark.png" alt="GitHub icon logo" />
     <ul nz-menu nzTheme="dark" nzMode="horizontal">
       <nz-input-group nzSuffixIcon="search" style="max-width: 300px">
-        <input nz-input placeholder="Search" #searchField [ngModel]="searchQ" [ngModelOptions]="{ updateOn: 'blur' }"
-               (ngModelChange)="setSearchQuery($event)" (keyup.enter)="setSearchQuery(searchField.value)" />
+        <input nz-input placeholder="Search" #searchField
+               [ngModel]="searchQ" [ngModelOptions]="{ updateOn: 'blur' }"
+               (ngModelChange)="changeQuery({ q: $event })"
+               (keyup.enter)="changeQuery({ q: searchField.value })" />
       </nz-input-group>
       <li nz-menu-item>Pull requests</li>
     </ul>

@@ -1,6 +1,5 @@
 import {Component, OnInit, NgModule, HostListener, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 
 import {NzLayoutModule} from "ng-zorro-antd/layout";
@@ -8,6 +7,7 @@ import {NzMenuModule} from "ng-zorro-antd/menu";
 import {NzAffixModule} from "ng-zorro-antd/affix";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzIconModule} from "ng-zorro-antd/icon";
+import {SearchService} from "../search/search-service/search.service";
 
 @Component({
   selector: 'demo-header',
@@ -17,11 +17,12 @@ import {NzIconModule} from "ng-zorro-antd/icon";
 export class HeaderComponent implements OnInit {
   @ViewChild('searchField') searchField;
   searchQ = '';
+  changeQuery = this.searchService.changeQuery.bind(this.searchService);
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private searchService: SearchService) { }
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe(params => this.searchQ = params.get('q'));
+    this.searchService.queryParams$.subscribe(params => this.searchQ = params['q']);
   }
 
   @HostListener('document:keydown./', ['$event'])
@@ -29,14 +30,6 @@ export class HeaderComponent implements OnInit {
     if (document.activeElement != this.searchField.nativeElement) {
       this.searchField.nativeElement.focus();
       event.preventDefault();
-    }
-  }
-
-  setSearchQuery(q: string) {
-    if (q) {
-      this.router.navigate(['search'], {
-        queryParams: { q },
-      });
     }
   }
 }

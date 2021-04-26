@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {SearchService} from "../search-service/search.service";
 
 @Component({
   selector: 'demo-search-type-menu',
@@ -7,21 +7,14 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./search-type-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchTypeMenuComponent implements OnInit {
-  type = '';
+export class SearchTypeMenuComponent {
+  queryParams$ = this.searchService.queryParams$;
+  search = this.searchService.search;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(public searchService: SearchService) { }
 
-  ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      this.type = params.get('type') || 'repositories';
-    });
-  }
-
-  changeType(type: string) {
-    const q = this.route.snapshot.queryParamMap.get('q') ?? '';
-    this.router.navigate(['search'], {
-      queryParams: {type, q },
-    });
+  async changeType(type: string) {
+    const { q } = await this.searchService.getQueryParams();
+    this.searchService.changeQuery({ type, q });
   }
 }

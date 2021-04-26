@@ -1,10 +1,18 @@
-<ul nz-menu nzMode="inline">
-  <li nz-menu-item [nzSelected]="type === 'repositories'" (click)="changeType('repositories')">
-    Repositories
-    <nz-tag style="margin-left: auto">{{ 1 | numAbbr }}</nz-tag>
-  </li>
-  <li nz-menu-item [nzSelected]="type === 'users'" (click)="changeType('users')">
-    Users
-    <nz-tag style="margin-left: auto">{{ 1 | numAbbr }}</nz-tag>
-  </li>
-</ul>
+<ng-container *ngIf="queryParams$ | async as queryParams">
+  <ul nz-menu nzMode="inline">
+    <li nz-menu-item [nzSelected]="queryParams.type === 'repositories'"
+        (click)="changeType('repositories')">
+      <span>Repositories</span>
+      <nz-tag style="margin-left: auto">
+        {{ (search.repositories | async)?.total_count | numAbbr }}
+      </nz-tag>
+    </li>
+    <li nz-menu-item [nzSelected]="queryParams.type === 'users'"
+        (click)="changeType('users')">
+      <span>Users</span>
+      <nz-tag style="margin-left: auto">
+        {{ (search.users | async)?.total_count | numAbbr }}
+      </nz-tag>
+    </li>
+  </ul>
+</ng-container>
