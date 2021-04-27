@@ -42,7 +42,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/github-search",
+            "baseHref": "/github-search-api-exercise/",
+            "outputPath": "docs",
             "index": "apps/github-search/src/index.html",
             "main": "apps/github-search/src/main.ts",
             "polyfills": "apps/github-search/src/polyfills.ts",
