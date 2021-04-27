@@ -5,7 +5,7 @@ import {SearchService} from "./search-service/search.service";
   selector: 'demo-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
   search$ = null;
